@@ -1,5 +1,7 @@
 
-var maxIterations = 1000;
+var maxIterations = 100000;
+var minIterations =  1000;
+
 var zoom = 3;
 
 function buddhabrot(imgData, height, width, xPos, yPos){
@@ -14,8 +16,8 @@ function buddhabrot(imgData, height, width, xPos, yPos){
     var shorter=(w<=h)?w:h;
     var dis=(longer-shorter)/2;
     var sym = (yPos==0);
-    var numPoints = 100;
-    var ppsl = 1;
+    var numPoints = 1;
+    var ppsl = 10;
     var squareLen = 0.001;
     var boxing = true;
     var c = {
@@ -31,7 +33,7 @@ function buddhabrot(imgData, height, width, xPos, yPos){
     		c.y = 4*(Math.random() - 0.5);
     		p = path(c,maxIterations);
     		//p == [] means the intheBrot function has returned true
-    	 }while((p.length == 0 || p.length >= maxIterations) );
+    	 }while((p.length <= minIterations || p.length >= maxIterations) );
         var dis = ppsl/squareLen;
         
         if (boxing){
