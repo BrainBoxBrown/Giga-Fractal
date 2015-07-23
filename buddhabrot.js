@@ -1,5 +1,5 @@
 
-var maxIterations = 10000;
+var maxIterations = 1000;
 var zoom = 3;
 
 function buddhabrot(imgData, height, width, xPos, yPos){
@@ -14,8 +14,8 @@ function buddhabrot(imgData, height, width, xPos, yPos){
     var shorter=(w<=h)?w:h;
     var dis=(longer-shorter)/2;
     var sym = (yPos==0);
-    var numPoints = 10000;
-    var ppsl = 10;
+    var numPoints = 100;
+    var ppsl = 1;
     var squareLen = 0.001;
     var boxing = true;
     var c = {
@@ -86,19 +86,21 @@ function writeToData(data, p, h, w, xPos, yPos, i){
         var f1 = (iter/maxIterations);
         var f2 = (10/(iter + 10));
         var f3 = (f1/(f2*50));
-        data[s] += x*(f3 + f1)*(i%5 + 1); //Red
-        data[s + 1] += x*(f3)*(i%2 + 1); //Green
-        data[s + 2] += x*f2*(i%3 + 1); //Blue
+        data[s] += x*(f3 + f1); //Red
+        data[s + 1] += x*(f3); //Green
+        data[s + 2] += x*f2; //Blue
         data[s + 3] = 256; //Alpha
         
-//        //Rainbow!!
-//        data[s + i%3] += x*(f3)*(i%7); //Red
-//        data[s + (1+i%3)%3] += x*(i%11); //Green
-//        data[s + (2+i%3)%3] += x*f2*(i%13); //Blue
+        //Rainbow!!
+        if (iter > 3*maxIterations/4){
+            data[s + i%3] += x*(f3)*(i%7 + 1); //Red
+            data[s + (1+i%3)%3] += x*(i%11 + 1); //Green
+            data[s + (2+i%3)%3] += x*f2*(i%13 + 1); //Blue
+        }
         
         //It's allways going to be symetrical
         var n = 4 * (h - Math.floor(t.y)) * w + 4 * Math.floor(t.x);
-        var k = x;
+        var k = x/2;
         data[n]     += k; //Red
         data[n + 1] += k; //Green
         data[n + 2] += k*(f1/(f2*70)); //Blue
